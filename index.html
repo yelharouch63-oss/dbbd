@@ -12,38 +12,79 @@
         }
 
         body {
-            background-color: #0b091a;
+            background: radial-gradient(circle at center, #1a0b2e 0%, #08030f 100%);
             overflow: hidden;
             height: 100vh;
             width: 100vw;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            position: relative;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* الكلمات المترسبة (النازلة) */
+        /* المربع الشفاف الجميل فـ الوسط مع تأثير البريق */
+        .glass-card {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 30px 40px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 182, 193, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(255, 105, 180, 0.15),
+                        inset 0 0 15px rgba(255, 192, 203, 0.1);
+            text-align: center;
+            max-width: 90%;
+            animation: pulseGlow 4s infinite alternate;
+        }
+
+        /* إضاءة خفيفة وبريق للمربع */
+        @keyframes pulseGlow {
+            0% {
+                box-shadow: 0 0 20px rgba(255, 105, 180, 0.15), inset 0 0 10px rgba(255, 255, 255, 0.05);
+                border-color: rgba(255, 182, 193, 0.2);
+            }
+            100% {
+                box-shadow: 0 0 35px rgba(255, 105, 180, 0.3), inset 0 0 20px rgba(255, 192, 203, 0.2);
+                border-color: rgba(255, 182, 193, 0.4);
+            }
+        }
+
+        .main-title {
+            color: #ffffff;
+            font-size: 1.4rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-shadow: 0 0 12px rgba(255, 105, 180, 0.6);
+        }
+
+        /* الكلمات النازلة (أفقية وبدون دوران) */
         .falling-text {
             position: absolute;
-            top: -60px;
+            top: -50px;
             user-select: none;
             pointer-events: none;
             white-space: nowrap;
-            animation: fall linear infinite;
-            font-weight: bold;
+            animation: fallStraight linear infinite;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
-        @keyframes fall {
+        /* حركة الهبوط المستقيم فقط */
+        @keyframes fallStraight {
             0% {
-                transform: translateY(-60px) rotate(0deg);
+                transform: translateY(-50px);
                 opacity: 0;
             }
             15% {
-                opacity: 1;
+                opacity: 0.9;
             }
             85% {
-                opacity: 1;
+                opacity: 0.9;
             }
             100% {
-                transform: translateY(108vh) rotate(360deg);
+                transform: translateY(105vh);
                 opacity: 0;
             }
         }
@@ -51,64 +92,55 @@
 </head>
 <body>
 
+    <!-- المربع الشفاف الأنيق فـ الوسط -->
+    <div class="glass-card">
+        <h1 class="main-title">✨ I LOVE YOU MY SHEYLA BASMA ✨</h1>
+    </div>
+
     <script>
-        // محاكي تساقط "I LOVE YOU MY SHEYLA BASMA"
-        const colors = ['#ff2a75', '#ff69b4', '#ff1493', '#ff8da1', '#ffffff', '#e0b0ff', '#ffb6c1'];
+        const colors = ['#ff69b4', '#ff8da1', '#ffffff', '#e0b0ff', '#ffb6c1', '#f4c2c2'];
         const phrases = [
             'I LOVE YOU MY SHEYLA BASMA ❤️', 
             'I LOVE YOU MY SHEYLA BASMA ✨', 
             'I LOVE YOU MY SHEYLA BASMA 💖', 
-            'I LOVE YOU MY SHEYLA BASMA 🌹', 
-            'I LOVE YOU MY SHEYLA BASMA 💕'
+            'I LOVE YOU MY SHEYLA BASMA 🌹'
         ];
 
         function createFallingText() {
             const textNode = document.createElement('div');
             textNode.classList.add('falling-text');
             
-            // اختيار نص ولون وسرعة وحجم عشوائي
+            // نص ولون عشوائي
             textNode.innerText = phrases[Math.floor(Math.random() * phrases.length)];
             textNode.style.color = colors[Math.floor(Math.random() * colors.length)];
-            textNode.style.left = Math.random() * 85 + 'vw';
             
-            const fontSize = Math.random() * 16 + 14; // حجم مناسب للهاتف
+            // توزيع المكان أفقياً
+            textNode.style.left = (Math.random() * 80 + 5) + 'vw';
+            
+            // حجم الخط متناسق
+            const fontSize = Math.random() * 6 + 14; // بين 14px و 20px
             textNode.style.fontSize = fontSize + 'px';
             
-            const duration = Math.random() * 5 + 5; // تهبط بشوية (بين 5 و 10 ثواني)
+            // سرعة الهبوط ببطء وهدوء (من 7 لـ 12 ثانية)
+            const duration = Math.random() * 5 + 7;
             textNode.style.animationDuration = duration + 's';
 
-            // إضافة تأثير الإضاءة (Glow)
-            textNode.style.textShadow = `0 0 10px ${textNode.style.color}`;
+            // بريق خفيف للكلمات
+            textNode.style.textShadow = `0 0 8px ${textNode.style.color}`;
 
             document.body.appendChild(textNode);
 
-            // مسح العنصر بعد نهايته
+            // حذف العنصر بعد وصوله للأسفل
             setTimeout(() => {
                 textNode.remove();
             }, duration * 1000);
         }
 
-        // إنشاء كلمة جديدة كل 160 ميلي ثانية
-        setInterval(createFallingText, 160);
+        // إطلاق كلمة واحدة كل 650 ميلي ثانية (باش يجيو قلااال ومتباعدين)
+        setInterval(createFallingText, 650);
     </script>
 </body>
 </html>
-        function createFallingText() {
-            const textNode = document.createElement('div');
-            textNode.classList.add('falling-text');
-            
-            // اختيار نص ولون وسرعة وحجم عشوائي
-            textNode.innerText = phrases[Math.floor(Math.random() * phrases.length)];
-            textNode.style.color = colors[Math.floor(Math.random() * colors.length)];
-            textNode.style.left = Math.random() * 95 + 'vw';
-            
-            const fontSize = Math.random() * 18 + 14; // حجم الخط بين 14 و 32
-            textNode.style.fontSize = fontSize + 'px';
-            
-            const duration = Math.random() * 4 + 4; // سرعة الهبوط (من 4 لـ 8 ثواني)
-            textNode.style.animationDuration = duration + 's';
-
-            // إضافة تأثير الإضاءة (Glow)
             textNode.style.textShadow = `0 0 8px ${textNode.style.color}`;
 
             document.body.appendChild(textNode);
