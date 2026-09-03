@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Love You ❤️</title>
+    <!-- مكتبة لإنشاء كود QR تلقائياً -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0b091a;
+            overflow: hidden;
+            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* مربع كود QR */
+        .qr-card {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 105, 180, 0.3);
+            box-shadow: 0 0 30px rgba(255, 20, 147, 0.2);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .qr-card:hover {
+            transform: scale(1.03);
+        }
+
+        #qrcode {
+            background: #fff;
+            padding: 12px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .qr-title {
+            color: #ff69b4;
+            margin-top: 15px;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+        }
+
+        /* الكلمات المترسبة (النازلة) */
+        .falling-text {
+            position: absolute;
+            top: -50px;
+            user-select: none;
+            pointer-events: none;
+            white-space: nowrap;
+            animation: fall linear infinite;
+            font-weight: bold;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(105vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- كارت فيها QR -->
+    <div class="qr-card">
+        <div id="qrcode"></div>
+        <p class="qr-title">Scan Me ❤️</p>
+    </div>
+
+    <script>
+        // 1. توليد كود QR للرابط الحالي تلقائياً
+        new QRCode(document.getElementById("qrcode"), {
+            text: window.location.href,
+            width: 160,
+            height: 160,
+            colorDark : "#2b0018",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
+
+        // 2. محاكي تساقط "I Love You"
+        const colors = ['#ff2a75', '#ff69b4', '#ff1493', '#ff8da1', '#ffffff', '#e0b0ff'];
+        const phrases = ['I Love You ❤️', 'I Love You ✨', 'I Love You 💖', 'I Love You 🌹'];
+
+        function createFallingText() {
+            const textNode = document.createElement('div');
+            textNode.classList.add('falling-text');
+            
+            // اختيار نص ولون وسرعة وحجم عشوائي
+            textNode.innerText = phrases[Math.floor(Math.random() * phrases.length)];
+            textNode.style.color = colors[Math.floor(Math.random() * colors.length)];
+            textNode.style.left = Math.random() * 95 + 'vw';
+            
+            const fontSize = Math.random() * 18 + 14; // حجم الخط بين 14 و 32
+            textNode.style.fontSize = fontSize + 'px';
+            
+            const duration = Math.random() * 4 + 4; // سرعة الهبوط (من 4 لـ 8 ثواني)
+            textNode.style.animationDuration = duration + 's';
+
+            // إضافة تأثير الإضاءة (Glow)
+            textNode.style.textShadow = `0 0 8px ${textNode.style.color}`;
+
+            document.body.appendChild(textNode);
+
+            // مسح العنصر بعد نهايته باش ما يتقالش المتصفح
+            setTimeout(() => {
+                textNode.remove();
+            }, duration * 1000);
+        }
+
+        // إنشاء كلمة جديدة كل 180 ميلي ثانية
+        setInterval(createFallingText, 180);
+    </script>
+</body>
+</html>
