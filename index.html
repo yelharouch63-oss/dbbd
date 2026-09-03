@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -19,15 +19,12 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* المربع الزجاجي الشفاف المصمم خصيصاً للتليفون */
         .glass-card-falling {
             position: absolute;
             top: -100px;
             user-select: none;
             pointer-events: none;
             animation: fallStraight linear infinite;
-            
-            /* خلفية زجاجية شفافة أنيقة */
             background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
@@ -36,13 +33,11 @@
             border: 1px solid rgba(255, 182, 193, 0.35);
             box-shadow: 0 4px 18px rgba(255, 105, 180, 0.2),
                         inset 0 0 10px rgba(255, 255, 255, 0.1);
-            
             text-align: center;
             font-weight: 700;
             line-height: 1.3;
         }
 
-        /* حركة هبوط مستقيمة وبطيئة */
         @keyframes fallStraight {
             0% {
                 transform: translateY(-100px);
@@ -66,7 +61,6 @@
     <script>
         const colors = ['#ff69b4', '#ff8da1', '#ffffff', '#e0b0ff', '#ffb6c1', '#ffd1dc'];
         
-        // العبارة مقسومة على جوج سطور مقادين فـ وسط المربع
         const phrases = [
             '✨ I LOVE YOU ✨<br>MY SHEYLA BASMA ❤️', 
             '💖 I LOVE YOU 💖<br>MY SHEYLA BASMA ✨', 
@@ -78,37 +72,32 @@
             const card = document.createElement('div');
             card.classList.add('glass-card-falling');
             
-            // اختيار الجملة واللون
             const selectedColor = colors[Math.floor(Math.random() * colors.length)];
             card.innerHTML = phrases[Math.floor(Math.random() * phrases.length)];
             card.style.color = selectedColor;
             
-            // بريق الحواف والخط
             card.style.textShadow = `0 0 8px ${selectedColor}`;
             card.style.borderColor = selectedColor + '55';
 
-            // توزيع الأماكن أفقياً ومناسب لعرض التليفون (بين 5% و 45%)
             card.style.left = (Math.random() * 40 + 5) + 'vw';
             
-            // حجم الخط متناسق للهاتف
-            const fontSize = Math.random() * 2 + 13; // بين 13px و 15px
+            const fontSize = Math.random() * 2 + 13;
             card.style.fontSize = fontSize + 'px';
             
-            // سرعة الهبوط ببطء ورقي (من 7 لـ 11 ثانية)
             const duration = Math.random() * 4 + 7;
             card.style.animationDuration = duration + 's';
 
             document.body.appendChild(card);
 
-            // مسح المربع بعد نهايته
             setTimeout(() => {
                 card.remove();
             }, duration * 1000);
         }
 
-        // إنشاء مربع جديد كل 800 ميلي ثانية (باش ينزلوا منظمين وقلاال)
         setInterval(createFallingCard, 800);
     </script>
+</body>
+</html>
 </body>
 </html>
             
